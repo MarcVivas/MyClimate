@@ -23,6 +23,10 @@ The API endpoints are documented in the file named `api_doc.yaml`. In order to p
 the API endpoints in a friendly UI and interact with it, 
 open [Swagger Editor](https://editor.swagger.io/) and import the file.  
 
+## Project structure
+In case you have never seen a Laravel project, it can be quite hard to 
+find the code that really matters. For this reason, now I will show you where
+are the most important files.
 ## Hours spent
 - December 2 2022: 16:30 - 19:30  Project planning ->  <strong> 3 hours </strong>  
 - December 3 2022: 9:00 - 
