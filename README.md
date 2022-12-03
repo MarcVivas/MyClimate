@@ -24,7 +24,10 @@ the API endpoints in a friendly UI and interact with it,
 open [Swagger Editor](https://editor.swagger.io/) and import the file.  
 
 ## Hours spent
-- December 2 2022: 16:30 - 19:30 ->  <strong> 3 hours </strong>  
-- December 3 2022: 8:40 - 
+- December 2 2022: 16:30 - 19:30  Project planning ->  <strong> 3 hours </strong>  
+- December 3 2022: 9:00 - 
 - December 4 2022: 
 - <strong>  Total:   ?? hours  </strong> 
+
+## References
+1. 
