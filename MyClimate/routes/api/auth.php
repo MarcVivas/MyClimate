@@ -14,6 +14,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/homes', function (Request $request) {
-    return $request->user();
-});

@@ -12,6 +12,13 @@ class Home extends Model
     public $timestamps = false;
 
 
+    protected $fillable = [
+        'user_id',
+        'address',
+        'name',
+        'description'
+    ];
+
     /**
      * A home can have many sensors
      * @return HasMany
