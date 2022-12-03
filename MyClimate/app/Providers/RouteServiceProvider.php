@@ -28,14 +28,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/home.php'));
+        $this->mapApiRoutes();
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
     }
 
     /**
@@ -47,6 +41,21 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+    }
+
+
+    protected function mapApiRoutes()
+    {
+        Route::group([
+        ], function ($router) {
+            require base_path('routes/web.php');
+            require base_path('routes/api/auth.php');
+            require base_path('routes/api/home.php');
+            require base_path('routes/api/prediction.php');
+            require base_path('routes/api/sensor.php');
+            require base_path('routes/api/temperature.php');
+            require base_path('routes/api/user.php');
         });
     }
 }

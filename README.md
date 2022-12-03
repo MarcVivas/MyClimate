@@ -3,7 +3,7 @@
 ## Table of contents
 1. [Author](#1-author)
 2. [About MyClimate project](#2-about-myclimate-api-project)
-3. [Horus spent]()
+3. [Hours spent]()
 
 ## 1. Author
 Marc Vivas Baiges
@@ -30,4 +30,4 @@ open [Swagger Editor](https://editor.swagger.io/) and import the file.
 - <strong>  Total:   ?? hours  </strong> 
 
 ## References
-1. 
+1. API token authentication: https://laravel.com/docs/9.x/sanctum#api-token-authentication
