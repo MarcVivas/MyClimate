@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateHomeRequest;
 use App\Http\Resources\HomeResource;
 use App\Models\Home;
 use App\Services\HomeService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class HomesController extends Controller
@@ -24,7 +26,7 @@ class HomesController extends Controller
      * Creates a new home
      * @url POST /homes
      * @param CreateHomeRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(CreateHomeRequest $request){
         // User is authenticated --> Checked by sanctum middleware
@@ -45,9 +47,10 @@ class HomesController extends Controller
 
     /**
      * Updates a home only if the authenticated user is the owner.
+     * @url PATCH /homes/{id}
      * @param UpdateHomeRequest $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(UpdateHomeRequest $request, $id){
         // User is authenticated --> Checked by sanctum middleware
@@ -69,4 +72,28 @@ class HomesController extends Controller
 
 
     }
+
+    /**
+     * Deletes a home and its sensors
+     * @url DELETE /homes/{id}
+     * @param $id
+     * @return Response
+     */
+    public function destroy($id){
+        // User is authenticated --> Checked by sanctum middleware
+        $user = Auth::user();
+
+        // Get home
+        $home = Home::findOrFail($id);  // If not found -> 404
+
+        // Only allowed to the owner of the house
+        abort_if($home->user_id !== $user->id, 403);
+
+        // Delete the house
+        $this->homeService->deleteHome($home);
+
+        return response()->noContent();        // 204
+    }
+
+
 }

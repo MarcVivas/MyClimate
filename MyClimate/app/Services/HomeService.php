@@ -38,4 +38,13 @@ class HomeService
         return $home;
     }
 
+    /**
+     * Deletes the given home and all the sensors it had
+     * @param Home $home
+     * @return void
+     */
+    public function deleteHome(Home $home){
+        $home->delete();
+    }
+
 }

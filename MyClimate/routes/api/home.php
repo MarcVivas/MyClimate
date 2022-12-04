@@ -25,5 +25,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::patch('homes/{id}', [HomesController::class, 'update'])
         ->name('api.homes.update');
 
+    // Delete a home
+    Route::delete('homes/{id}', [HomesController::class, 'destroy'])
+        ->name('api.homes.destroy');
+
 });
 

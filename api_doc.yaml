@@ -10,11 +10,11 @@ servers:
 
 
 tags:
+  - name: user
   - name: home
   - name: sensor
   - name: temperature
   - name: prediction
-  - name: user
 
 
 
@@ -22,122 +22,6 @@ tags:
 
 
 paths:
-  /homes:
-    post:
-      tags:
-        - home
-      security:
-        - bearerAuth: []
-      summary: Creates a new home
-      description: >
-        Creates a new home with the given data  
-        The owner of the home will be the authenticated user.
-        Requires authentication.
-
-      requestBody:
-        description: Home information
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: >
-                    ** Name of the house **
-                    Max length: 60
-                    required: true
-                  example: Mansion
-
-                address:
-                  type: string
-                  description: >
-                    Max length: 100
-                    required: true
-                  example: Duck Street 4
-
-                description:
-                  type: string
-                  description: >
-                    Max length: 500
-                    required: true
-                  example: 'House with barbacue!'
-
-        required: true
-
-      responses:
-        '201':
-          description: A new home has been created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Home'
-        '401':
-          description: Requires authentication.
-        '422':
-          description: Validation error, Missing values, incorrect types, too long strings...
-
-
-  /homes/{id}:
-    patch:
-      tags:
-        - home
-      security:
-        - bearerAuth: []
-      summary: Edit a home
-      description: Update a home only if the user is authenticated and is the owner.
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: Home identifier
-          example: 1
-
-      requestBody:
-        description: Home information
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: >
-                    ** Name of the house **
-                    Max length: 60
-                    required: false
-                  example: Beach house
-                address:
-                  type: string
-                  description: >
-                    Max length: 100
-                    required: false
-                  example: Avocado Street 4
-                description:
-                  type: string
-                  description: >
-                    Max length: 500
-                    required: false
-                  example: 'House with garden!'
-
-      responses:
-        '200':
-          description: The house was modified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Home"
-        '401':
-          description: Requires authentication. User must provide a valid bearer token.
-        '403':
-          description: Forbidden. The authenticaded user is not the owner of the house.
-        '404':
-          description: Not found. There isn't any house with the given id.
-
-
   /user/login:
     post:
       tags:
@@ -226,6 +110,149 @@ paths:
 
         '422':
           description: Validation error. Username alreday taken, short password...
+
+  /homes:
+    post:
+      tags:
+        - home
+      security:
+        - bearerAuth: []
+      summary: Creates a new home
+      description: >
+        Creates a new home with the given data  
+        The owner of the home will be the authenticated user.
+        Requires authentication.
+
+      requestBody:
+        description: Home information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: >
+                    ** Name of the house **
+                    Max length: 60
+                    required: true
+                  example: Mansion
+
+                address:
+                  type: string
+                  description: >
+                    Max length: 100
+                    required: true
+                  example: Duck Street 4
+
+                description:
+                  type: string
+                  description: >
+                    Max length: 500
+                    required: true
+                  example: 'House with barbacue!'
+
+        required: true
+
+      responses:
+        '201':
+          description: A new home has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Home'
+        '401':
+          description: Requires authentication.
+        '422':
+          description: Validation error, Missing values, incorrect types, too long strings...
+
+
+  /homes/{id}:
+    patch:
+      tags:
+        - home
+      security:
+        - bearerAuth: []
+      summary: Update a home
+      description: Update a home only if the user is authenticated and is the owner.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Home identifier
+          example: 1
+
+      requestBody:
+        description: Home information
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: >
+                    ** Name of the house **
+                    Max length: 60
+                    required: false
+                  example: Beach house
+                address:
+                  type: string
+                  description: >
+                    Max length: 100
+                    required: false
+                  example: Avocado Street 4
+                description:
+                  type: string
+                  description: >
+                    Max length: 500
+                    required: false
+                  example: 'House with garden!'
+
+      responses:
+        '200':
+          description: The house was modified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Home"
+        '401':
+          description: Requires authentication. User must provide a valid bearer token.
+        '403':
+          description: Forbidden. The authenticaded user is not the owner of the house.
+        '404':
+          description: Not found. There isn't any house with the given id.
+
+    delete:
+      tags:
+        - home
+      description: Delete a home and all the sensors it had, only if the user is authenticated and is the owner of the house.
+      summary: Delete a home
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          example: 1
+          required: true
+          description: House identifier
+
+      responses:
+        '204':
+          description: No content. Deleted successfully.
+        '401':
+          description: Requires authentication. User must provide a valid bearer token.
+        '403':
+          description: Forbidden. The authenticaded user is not the owner of the house.
+        '404':
+          description: Not found. There isn't any house with the given id.
 
 
 components:
