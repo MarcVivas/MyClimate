@@ -108,7 +108,7 @@ paths:
                     Max length: 1024
                     Min length: 4
                     Required: true
-                  example: 12345
+                  example: 1234
 
         required: true
 
