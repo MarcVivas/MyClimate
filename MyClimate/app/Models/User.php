@@ -14,6 +14,10 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
+    public $fillable = [
+        'username',
+        'password'
+    ];
 
     /**
      * A user can have many homes

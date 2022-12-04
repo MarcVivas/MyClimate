@@ -15,5 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+// User login
 Route::post('user/login', [UserController::class, 'login'])
     ->name('api.users.login');
+
+// User register
+Route::post('user/register', [UserController::class, 'register'])
+    ->name('api.users.register');

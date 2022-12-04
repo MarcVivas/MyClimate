@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -15,6 +16,18 @@ class UserService
      */
     public function findByUserNameOrFail($username){
         return User::where('username', $username)->firstOrFail();
+    }
+
+    /**
+     * Creates a new user and returns it
+     * @param $userData
+     * @return User
+     */
+    public function createUser($userData){
+        return User::create([
+            'username' => $userData['username'],
+            'password' => Hash::make($userData['password'])  // Encrypted
+        ]);
     }
 
 }

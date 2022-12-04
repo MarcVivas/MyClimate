@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Http\Resources\AuthResource;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -34,4 +36,23 @@ class UserController extends Controller
 
         return new AuthResource($user->createToken($validatedData['username'])->plainTextToken);
     }
+
+    /**
+     * Register a new user
+     * @url POST /user/register
+     * @param RegisterUserRequest $request
+     * @return JsonResponse
+     */
+    public function register(RegisterUserRequest $request){
+
+        // Get the request data
+        $validatedData = $request->validated();
+
+        // Create the user
+        $user = $this->userService->createUser($validatedData);
+
+        // Return token
+        return response()->json(['data' => new AuthResource($user->createToken($user->username)->plainTextToken)], 201);
+    }
+
 }

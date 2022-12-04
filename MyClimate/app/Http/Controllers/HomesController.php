@@ -22,7 +22,7 @@ class HomesController extends Controller
      * Creates a new home
      * @url POST /homes
      * @param CreateHomeRequest $request
-     * @return HomeResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateHomeRequest $request){
         // User is authenticated --> Checked by sanctum middleware
@@ -37,7 +37,7 @@ class HomesController extends Controller
         // Create a home whose owner will be the requester
         $home = $this->homeService->createHome($validatedRequestData);
 
-        return new HomeResource($home);
+        return response()->json(['data' => new HomeResource($home)], 201);
 
     }
 }
