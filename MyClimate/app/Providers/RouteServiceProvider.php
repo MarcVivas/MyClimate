@@ -50,7 +50,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::group([
         ], function ($router) {
             require base_path('routes/web.php');
-            require base_path('routes/api/auth.php');
             require base_path('routes/api/home.php');
             require base_path('routes/api/prediction.php');
             require base_path('routes/api/sensor.php');
