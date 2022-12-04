@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Create a new home
-Route::post('homes', [HomesController::class, 'store'])
-    ->name('api.homes.store');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    // Create a new home
+    Route::post('homes', [HomesController::class, 'store'])
+        ->name('api.homes.store');
+
+});
+

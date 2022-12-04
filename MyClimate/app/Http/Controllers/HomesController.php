@@ -25,18 +25,16 @@ class HomesController extends Controller
      * @return HomeResource
      */
     public function store(CreateHomeRequest $request){
-        // Get request data
+        // User is authenticated --> Checked by sanctum middleware
+        $user = Auth::user();
+
+        // Get validated request data
         $validatedRequestData = $request->validated();
 
-        // Check if the user is authenticated
-        if(Auth::check()){
-            // User is authenticated
-            $user = Auth::user();
+        // Append user id
+        $validatedRequestData['user_id'] = $user->id;
 
-            // Append user id
-            $validatedRequestData['user_id'] = $user->id;
-        }
-
+        // Create a home whose owner will be the requester
         $home = $this->homeService->createHome($validatedRequestData);
 
         return new HomeResource($home);

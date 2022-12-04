@@ -27,30 +27,20 @@ class CreateHomeTest extends TestCase
     }
 
     /**
-     * As a user who is not authenticated I want to create a new home without owner.
+     * As a user who is not authenticated I want to create a new home. -> Requires authentication
      *
      * @return void
      */
-    public function test_create_a_home_without_owner()
+    public function test_user_is_not_authenticated()
     {
         $requestBody = $this->getValidRequestBody();
 
         $response = $this->postJson(route($this->url), $requestBody);
 
-        $response->assertStatus(201);
+        // Requires authentication
+        $response->assertStatus(401);
 
-        $this->assertDatabaseCount('homes', 1);
-
-        $response->assertJson([
-            'data' => [
-                'id' => Home::find(1)->id,
-                'name' => $requestBody['name'],
-                'address' => $requestBody['address'],
-                'description' => $requestBody['description'],
-                'user_id' => null,  // No owner
-            ]
-        ]);
-
+        $this->assertDatabaseCount('homes', 0);
     }
 
 
@@ -59,7 +49,7 @@ class CreateHomeTest extends TestCase
      *
      * @return void
      */
-    public function test_create_a_home_authenticated()
+    public function test_create_a_home_while_being_authenticated()
     {
         // Acting as an authenticated user
         Sanctum::actingAs(User::factory()->create());
@@ -91,6 +81,8 @@ class CreateHomeTest extends TestCase
      */
     public function test_missing_values()
     {
+        // Acting as an authenticated user
+        Sanctum::actingAs(User::factory()->create());
 
         $requestBody = [];
 
@@ -117,6 +109,8 @@ class CreateHomeTest extends TestCase
      */
     public function test_too_long_strings()
     {
+        // Acting as an authenticated user
+        Sanctum::actingAs(User::factory()->create());
 
         $requestBody = [
             'name' => str_repeat('a', 100),
