@@ -21,5 +21,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('homes', [HomesController::class, 'store'])
         ->name('api.homes.store');
 
+    // Update a home
+    Route::patch('homes/{id}', [HomesController::class, 'update'])
+        ->name('api.homes.update');
+
 });
 

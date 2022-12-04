@@ -77,6 +77,67 @@ paths:
         '422':
           description: Validation error, Missing values, incorrect types, too long strings...
 
+
+  /homes/{id}:
+    patch:
+      tags:
+        - home
+      security:
+        - bearerAuth: []
+      summary: Edit a home
+      description: Update a home only if the user is authenticated and is the owner.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Home identifier
+          example: 1
+
+      requestBody:
+        description: Home information
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: >
+                    ** Name of the house **
+                    Max length: 60
+                    required: false
+                  example: Beach house
+                address:
+                  type: string
+                  description: >
+                    Max length: 100
+                    required: false
+                  example: Avocado Street 4
+                description:
+                  type: string
+                  description: >
+                    Max length: 500
+                    required: false
+                  example: 'House with garden!'
+
+      responses:
+        '200':
+          description: The house was modified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Home"
+        '401':
+          description: Requires authentication. User must provide a valid bearer token.
+        '403':
+          description: Forbidden. The authenticaded user is not the owner of the house.
+        '404':
+          description: Not found. There isn't any house with the given id.
+
+
   /user/login:
     post:
       tags:
