@@ -16,7 +16,7 @@ climate installation homes, sensors and users within a web services system.
 The project is built with **Laravel 9** which is a php framework.
 
 ## UML Class Diagram
-![UML Class Diagram](api_uml_diagram.svg)
+![UML Class Diagram](api_uml_diagram.png)
 
 ## API Docs
 The API endpoints are documented in the file named `api_doc.yaml`. In order to preview 
