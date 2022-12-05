@@ -8,6 +8,7 @@ use App\Http\Resources\HomeResource;
 use App\Models\Home;
 use App\Services\HomeService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -95,5 +96,22 @@ class HomesController extends Controller
         return response()->noContent();        // 204
     }
 
+
+    /**
+     * Get all homes filtered by the given query parameters
+     * @url GET /homes
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request){
+
+        // Pagination stuff
+        $page = $request->get('page') !== null ? $request->get('page') : 1;
+        $per_page = $request->get('perPage') !== null ? $request->get('perPage') : 10;
+
+        $houses = $this->homeService->applyFilters($request);
+
+        return HomeResource::collection($houses->paginate($per_page, ['*'], 'page', $page));
+    }
 
 }

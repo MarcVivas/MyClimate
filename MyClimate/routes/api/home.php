@@ -31,3 +31,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
+
+// List all homes
+Route::get('homes', [HomesController::class, 'index'])
+    ->name('api.homes.index');
+

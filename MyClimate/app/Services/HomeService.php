@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Home;
-use function Symfony\Component\String\s;
 
 class HomeService
 {
@@ -45,6 +44,32 @@ class HomeService
      */
     public function deleteHome(Home $home){
         $home->delete();
+    }
+
+
+    /**
+     * Returns all the users that match the filters.
+     * @param $filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function applyFilters($filters){
+
+        $houses = (new Home)->newQuery();
+
+        if(isset($filters['id'])){
+            $houses->where('id', $filters['id']);
+        }
+
+        if(isset($filters['address'])){
+            $houses->where('address', 'like', '%'.$filters['address'].'%');
+        }
+
+        if(isset($filters['description'])){
+            $houses->where('description', 'like', '%'.$filters['description'].'%');
+        }
+
+        return $houses;
+
     }
 
 }
