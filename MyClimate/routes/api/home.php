@@ -29,10 +29,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('homes/{id}', [HomesController::class, 'destroy'])
         ->name('api.homes.destroy');
 
+    // List all homes
+    Route::get('homes', [HomesController::class, 'index'])
+        ->name('api.homes.index');
+
+    // Get a specific home
+    Route::get('homes/{id}', [HomesController::class, 'show'])
+        ->name('api.homes.show');
+
 });
 
 
-// List all homes
-Route::get('homes', [HomesController::class, 'index'])
-    ->name('api.homes.index');
 

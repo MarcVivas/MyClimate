@@ -114,4 +114,12 @@ class HomesController extends Controller
         return HomeResource::collection($houses->paginate($per_page, ['*'], 'page', $page));
     }
 
+
+    public function show(int $id){
+
+        $home = $this->homeService->findByIdOrFail($id);    // If not found -> 404
+
+        return response()->json(['data' => new HomeResource($home)], 200);
+    }
+
 }

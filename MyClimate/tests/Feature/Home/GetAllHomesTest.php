@@ -3,7 +3,9 @@
 namespace Tests\Feature\Home;
 
 use App\Models\Home;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class GetAllHomesTest extends TestCase
@@ -28,12 +30,24 @@ class GetAllHomesTest extends TestCase
     }
 
     /**
+     * Acting as a user who is not authenticated
+     * @return void
+     */
+    public function test_user_is_not_authenticated(){
+        $this->getJson(route($this->url))
+            ->assertStatus(401);
+
+    }
+
+    /**
      * Get all homes without query parameters
      *
      * @return void
      */
     public function test_get_all_homes_without_query_parameters()
     {
+        Sanctum::actingAs(User::factory()->create());
+
         $response = $this->getJson(route($this->url));
 
         $response->assertStatus(200);
@@ -69,6 +83,8 @@ class GetAllHomesTest extends TestCase
      */
     public function test_test_get_home_1_using_filters()
     {
+        Sanctum::actingAs(User::factory()->create());
+
         $filters = [
             'description' => ' with b',
             'address' => ' street 1'
@@ -127,6 +143,8 @@ class GetAllHomesTest extends TestCase
      */
     public function test_test_get_home_2_using_filters()
     {
+        Sanctum::actingAs(User::factory()->create());
+
         $filters = [
             'description' => ' with g',
             'address' => ' street 7'
@@ -185,6 +203,8 @@ class GetAllHomesTest extends TestCase
      */
     public function test_get_all_homes_using_filters()
     {
+        Sanctum::actingAs(User::factory()->create());
+
         $filters = [
             'description' => 'House with ',
             'address' => 'Avocado street '

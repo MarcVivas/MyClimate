@@ -72,4 +72,13 @@ class HomeService
 
     }
 
+    /**
+     * Returns a home that has the given id
+     * @param int $id
+     * @return Home
+     */
+    public function findByIdOrFail(int $id){
+        return Home::findOrFail($id);
+    }
+
 }
