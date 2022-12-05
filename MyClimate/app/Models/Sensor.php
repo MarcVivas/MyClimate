@@ -12,6 +12,11 @@ class Sensor extends Model
     use HasFactory;
     public $timestamps = false;
 
+    public $fillable = [
+        'home_id',
+        'room'
+    ];
+
 
     /**
      * A sensor is located inside a specific house

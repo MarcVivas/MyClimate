@@ -273,11 +273,6 @@ paths:
                     type: integer
                     example: 130
 
-
-
-
-
-
         '401':
           description: Requires authentication.
 
@@ -399,6 +394,56 @@ paths:
         '404':
           description: Not found. There isn't any house with the given id.
 
+  /homes/{id}/sensors:
+    post:
+      summary: Create a sensor
+      description: Creates a sensor for a specific house. Requires authentication. Only allowed to the owner of the house.
+      tags:
+        - home
+        - sensor
+
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          example: 1
+          required: true
+          description: House id
+
+      requestBody:
+        description: Sensor information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                room:
+                  type: string
+                  example: Kitchen
+                  description: >
+                    Room where the sensor is placed. 
+                    Required: true. 
+                    Max length: 100
+      responses:
+        '201':
+          description: A new sensor has been created. Returns the created sensor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sensor"
+        '401':
+          description: Requires authentication.
+        '403':
+          description: Forbidden. User is not the owner of the house.
+        '404':
+          description: House not found.
+        '422':
+          description: Validation error. Missing values. Too long string...
+
+
 
 components:
   schemas:
@@ -457,6 +502,23 @@ components:
             username:
               type: string
               example: Robert
+
+    Sensor:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            room:
+              type: string
+              example: Kitchen
+            home_id:
+              type: integer
+              example: 1
+
 
 
   securitySchemes:

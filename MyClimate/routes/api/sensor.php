@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\SensorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,3 +13,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    // Create a new sensor
+    Route::post('homes/{id}/sensors', [SensorController::class, 'store'])
+        ->name('api.sensors.store');
+
+});

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomesController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,23 +18,23 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // Create a new home
-    Route::post('homes', [HomesController::class, 'store'])
+    Route::post('homes', [HomeController::class, 'store'])
         ->name('api.homes.store');
 
     // Update a home
-    Route::patch('homes/{id}', [HomesController::class, 'update'])
+    Route::patch('homes/{id}', [HomeController::class, 'update'])
         ->name('api.homes.update');
 
     // Delete a home
-    Route::delete('homes/{id}', [HomesController::class, 'destroy'])
+    Route::delete('homes/{id}', [HomeController::class, 'destroy'])
         ->name('api.homes.destroy');
 
     // List all homes
-    Route::get('homes', [HomesController::class, 'index'])
+    Route::get('homes', [HomeController::class, 'index'])
         ->name('api.homes.index');
 
     // Get a specific home
-    Route::get('homes/{id}', [HomesController::class, 'show'])
+    Route::get('homes/{id}', [HomeController::class, 'show'])
         ->name('api.homes.show');
 
 });
