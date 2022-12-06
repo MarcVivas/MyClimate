@@ -21,4 +21,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('homes/{id}/sensors', [SensorController::class, 'store'])
         ->name('api.sensors.store');
 
+    // Get all sensors
+    Route::get('homes/{id}/sensors', [SensorController::class, 'index'])
+        ->name('api.sensors.index');
+
 });

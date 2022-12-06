@@ -395,6 +395,107 @@ paths:
           description: Not found. There isn't any house with the given id.
 
   /homes/{id}/sensors:
+    get:
+      summary: Get all the sensors in a house
+      description: Get all the sensors that are in a house, paginated. Requires authentication. Only allowed to the owner of the house.
+      tags:
+        - home
+        - sensor
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          example: 1
+          required: true
+          description: House id
+
+      responses:
+        '200':
+          description: Returns all the sensor that are in a house.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        room:
+                          type: string
+                          example: Kitchen
+                        home_id:
+                          type: integer
+                          example: 1
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: http://127.0.0.1:8000/homes/1/sensors?page=4
+                      last:
+                        type: string
+                        example: http://127.0.0.1:8000/homes/1/sensors?page=13
+                      prev:
+                        type: string
+                        example: http://127.0.0.1:8000/homes/1/sensors?page=3
+                      next:
+                        type: string
+                        example: http://127.0.0.1:8000/homes/1/sensors?page=5
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 3
+                      from:
+                        type: integer
+                        example: 2
+                      last_page:
+                        type: integer
+                        example: 13
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+
+                            url:
+                              type: string
+                              example: http://127.0.0.1:8000/homes/1/sensors?page=3
+                            label:
+                              type: integer
+                              example: 3
+                            active:
+                              type: boolean
+                              example: true
+                  path:
+                    type: string
+                    example: http://127.0.0.1:8000/homes/1/sensors
+                  per_page:
+                    type: integer
+                    example: 10
+                  to:
+                    type: integer
+                    example: 4
+                  total:
+                    type: integer
+                    example: 130
+
+        '401':
+          description: Requires authentication
+        '403':
+          description: Forbidden. Only allowed to the owner of the house.
+        '404':
+          description: The house could not be found.
+
     post:
       summary: Create a sensor
       description: Creates a sensor for a specific house. Requires authentication. Only allowed to the owner of the house.
@@ -415,6 +516,7 @@ paths:
 
       requestBody:
         description: Sensor information
+        required: true
         content:
           application/json:
             schema:

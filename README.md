@@ -30,8 +30,9 @@ are the most important files.
 ## Hours spent
 - December 2 2022: 16:30 - 19:30 Project planning ->  <strong> 3 hours </strong>  
 - December 3 2022: 9:00 - 17:30 Project development -> <strong> 8.5 hours </strong> 
-- December 4 2022: 8:00 -  15:00 Project development -> <strong> 7 hours </strong>
-- December 5 2022: 16:30 -  :00 Project development -> <strong> 7 hours </strong>
+- December 4 2022: 8:00 - 15:00 Project development -> <strong> 7 hours </strong>
+- December 5 2022: 16:30 - 19:00 Project development -> <strong> 2.5 hours </strong>
+- December 6 2022: 16:30 - 19:00 Project development -> <strong> 2.5 hours </strong>
 - <strong>  Total:   ?? hours  </strong> 
 
 ## References
