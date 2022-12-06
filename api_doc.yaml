@@ -545,6 +545,34 @@ paths:
         '422':
           description: Validation error. Missing values. Too long string...
 
+  /sensors/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        example: 1
+        required: true
+        description: Sensor id
+
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete a sensor.
+      description: Delete a sensor. Requires authentication. Only allowed to the owner of the sensor.
+      tags:
+        - sensor
+
+      responses:
+        '204':
+          description: Sensor was deleted.
+        '401':
+          description: Requires authentication
+        '403':
+          description: Forbidden. Only allowed to the owner of the sensor.
+        '404':
+          description: Sensor could not be found.
+
 
 
 components:

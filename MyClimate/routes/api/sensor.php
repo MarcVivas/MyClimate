@@ -25,4 +25,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('homes/{id}/sensors', [SensorController::class, 'index'])
         ->name('api.sensors.index');
 
+    // Delete a sensor
+    Route::delete('sensors/{id}', [SensorController::class, 'destroy'])
+        ->name('api.sensors.destroy');
+
 });

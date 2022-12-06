@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Home;
+namespace Tests\Feature\Sensor;
 
 use App\Models\Home;
 use App\Models\Sensor;

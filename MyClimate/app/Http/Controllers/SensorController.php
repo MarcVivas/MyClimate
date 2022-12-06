@@ -9,6 +9,7 @@ use App\Services\SensorService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class SensorController extends Controller
@@ -51,7 +52,8 @@ class SensorController extends Controller
 
     /**
      * Get all sensors of a house
-     * @url POST /homes/{id}/sensors
+     * @url GET /homes/{id}/sensors
+     * @param Request $request
      * @param int $id
      * @return AnonymousResourceCollection
      */
@@ -72,5 +74,29 @@ class SensorController extends Controller
 
         return SensorResource::collection($home->sensors()->paginate($per_page, ['*'], 'page', $page));
 
+    }
+
+
+    /**
+     * Delete a sensor
+     * @url DELETE /sensors/{id}
+     * @param int $id
+     * @return Response
+     */
+    public function destroy(int $id): Response
+    {
+        // User is authenticated --> Checked by sanctum middleware
+        $user = Auth::user();
+
+        $sensor = $this->sensorService->findByIdOrFail($id); // If not found -> 404
+
+        // Return 403 if the user is not the owner of the sensor
+        abort_if($sensor->home->user_id !== $user->id, 403);
+
+        // Delete the sensor
+        $this->sensorService->deleteSensor($sensor);
+
+        // Return 204
+        return response()->noContent();
     }
 }
