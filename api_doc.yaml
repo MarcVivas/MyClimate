@@ -672,7 +672,61 @@ paths:
           description: Sensor could not be found.
 
 
-
+  /sensors/{id}/temperatures:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        example: 1
+        required: true
+        description: Sensor id
+    post:
+      tags:
+        - temperatures
+        - sensor
+      security:
+        - bearerAuth: []
+      summary: Register a new temperature
+      description: Register a new temperature. Requires authentication. Only allowed to the owner of the sensor.
+      requestBody:
+        description: Temperature information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                temperature:
+                  type: number
+                  format: float
+                  description: >
+                    Measured temperature. 
+                    Required: True
+                  example: 23.4
+                measured_at:
+                  type: string
+                  format: date-time
+                  description: >
+                    When the temperature was measured
+                    Required: True
+                    Date format
+                  example: "2017-07-21T17:32:28Z"
+      responses:
+        '201':
+          description: Temperature stored.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Temperature"
+        '401':
+          description: Requires authentication
+        '403':
+          description: Forbidden. Only allowed to the owner of the sensor.
+        '404':
+          description: Sensor not found.
+        '422':
+          description: Validation error. Missing values, incorrect types...
 components:
   schemas:
     Home:
@@ -744,6 +798,29 @@ components:
               type: string
               example: Kitchen
             home_id:
+              type: integer
+              example: 1
+
+
+    Temperature:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            temperature:
+              type: number
+              format: float
+              example: 25.2
+
+            measured_at:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+            sensor_id:
               type: integer
               example: 1
 

@@ -12,6 +12,12 @@ class Temperature extends Model
     use HasFactory;
     public $timestamps = false;
 
+    public $fillable = [
+        'temperature',
+        'measured_at',
+        'sensor_id'
+    ];
+
 
     /**
      * A temperature is measured by a sensor
