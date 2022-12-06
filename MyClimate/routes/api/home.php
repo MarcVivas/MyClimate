@@ -37,6 +37,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('homes/{id}', [HomeController::class, 'show'])
         ->name('api.homes.show');
 
+
+    // Get all homes of a user
+    Route::get('user/homes', [HomeController::class, 'getUserHomes'])
+        ->name('api.homes.getUserHomes');
+
 });
 
 

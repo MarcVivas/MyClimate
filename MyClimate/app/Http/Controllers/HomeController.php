@@ -9,6 +9,7 @@ use App\Models\Home;
 use App\Services\HomeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -101,7 +102,7 @@ class HomeController extends Controller
      * Get all homes filtered by the given query parameters
      * @url GET /homes
      * @param Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index(Request $request){
 
@@ -115,11 +116,37 @@ class HomeController extends Controller
     }
 
 
+    /**
+     * Get a home
+     * @url GET /homes/{id}
+     * @param int $id
+     * @return JsonResponse
+     */
     public function show(int $id){
 
         $home = $this->homeService->findByIdOrFail($id);    // If not found -> 404
 
         return response()->json(['data' => new HomeResource($home)], 200);
+    }
+
+
+
+    /**
+     * Get all homes of the authenticated user
+     * @url GET /homes
+     * @param Request $request
+     * @return AnonymousResourceCollection
+     */
+    public function getUserHomes(Request $request){
+        // User is authenticated --> Checked by sanctum middleware
+        $user = Auth::user();
+
+        // Pagination stuff
+        $page = $request->get('page') !== null ? $request->get('page') : 1;
+        $per_page = $request->get('perPage') !== null ? $request->get('perPage') : 10;
+
+
+        return HomeResource::collection($user->homes()->paginate($per_page, ['*'], 'page', $page));
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Home;
+use Illuminate\Database\Eloquent\Builder;
 
 class HomeService
 {
@@ -50,7 +51,7 @@ class HomeService
     /**
      * Returns all the users that match the filters.
      * @param $filters
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function applyFilters($filters){
 
@@ -58,6 +59,10 @@ class HomeService
 
         if(isset($filters['id'])){
             $houses->where('id', $filters['id']);
+        }
+
+        if(isset($filters['user_id'])){
+            $houses->where('user_id', $filters['user_id']);
         }
 
         if(isset($filters['address'])){
