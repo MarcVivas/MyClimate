@@ -11,6 +11,15 @@ class Prediction extends Model
     use HasFactory;
     public $timestamps = false;
 
+    public $fillable = [
+        'date',
+        'sensor_id',
+        'temperature_id',
+        'y_hat',
+        'y_hat_lower',
+        'y_hat_upper'
+    ];
+
     /**
      * A prediction belongs to a sensor
      * @return BelongsTo

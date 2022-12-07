@@ -16,4 +16,13 @@ class TemperatureService
         return Temperature::create($temperatureData);
     }
 
+    /**
+     * If found, returns a temperature that matches with the given id
+     * @param int $id
+     * @return mixed
+     */
+    public function findByIdOrFail(int $id){
+        return Temperature::findOrFail($id);
+    }
+
 }
