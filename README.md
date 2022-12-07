@@ -33,7 +33,8 @@ are the most important files.
 - December 4 2022: 8:00 - 15:00 Project development -> <strong> 7 hours </strong>
 - December 5 2022: 16:30 - 19:00 Project development -> <strong> 2.5 hours </strong>
 - December 6 2022: 7:00 - 11:30 Project development -> <strong> 4.5 hours </strong>
-- December 7 2022: 7:00 - 11:30 Project development -> <strong> 4.5 hours </strong>
+- December 7 2022: 16:00 - 18:00 Project development (Finished all endpoints) -> <strong> 2 hours </strong>
+- December 8 2022: 16:00 - 18:00 Project development -> <strong> 2 hours </strong>
 - <strong>  Total:   ?? hours  </strong> 
 
 ## References
