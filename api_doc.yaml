@@ -671,7 +671,6 @@ paths:
         '404':
           description: Sensor could not be found.
 
-
   /sensors/{id}/temperatures:
     parameters:
       - in: path
@@ -681,13 +680,110 @@ paths:
         example: 1
         required: true
         description: Sensor id
-    post:
+
+    get:
       tags:
-        - temperatures
+        - temperature
         - sensor
       security:
         - bearerAuth: []
-      summary: Register a new temperature
+      summary: Get all temperatures measured by a sensor.
+      description: Get all temperatures measured by a sensor. Requires authentication. Only allowed to the owner of the sensor.
+      responses:
+        '200':
+          description: Returns all measured temperatures by a sensor. Paginated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        temperature:
+                          type: number
+                          format: float
+                          example: 13.11
+                        measured_at:
+                          type: string
+                          format: date-time
+                          example: "2017-07-21T17:32:28Z"
+                        sensor_id:
+                          type: integer
+                          example: 1
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/temperatures?page=4
+                      last:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/temperatures?page=13
+                      prev:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/temperatures?page=3
+                      next:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/temperatures?page=5
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 3
+                      from:
+                        type: integer
+                        example: 2
+                      last_page:
+                        type: integer
+                        example: 13
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+
+                            url:
+                              type: string
+                              example: http://127.0.0.1:8000/sensors/1/temperatures?page=3
+                            label:
+                              type: integer
+                              example: 3
+                            active:
+                              type: boolean
+                              example: true
+                  path:
+                    type: string
+                    example: http://127.0.0.1:8000/sensors/1/temperatures
+                  per_page:
+                    type: integer
+                    example: 10
+                  to:
+                    type: integer
+                    example: 4
+                  total:
+                    type: integer
+                    example: 130
+        '401':
+          description: Requires authentication.
+        '403':
+          description: Forbidden. Only allowed to the owner of the sensor.
+        '404':
+          description: Sensor not found.
+
+    post:
+      tags:
+        - temperature
+        - sensor
+      security:
+        - bearerAuth: []
+      summary: Create a new temperature
       description: Register a new temperature. Requires authentication. Only allowed to the owner of the sensor.
       requestBody:
         description: Temperature information
@@ -727,6 +823,186 @@ paths:
           description: Sensor not found.
         '422':
           description: Validation error. Missing values, incorrect types...
+
+  /temperatures/{id}/predictions:
+    post:
+      summary: Create a temperature prediction
+      description: Store a temperature prediction. Requires authentication. Only allowed to the owner of the sensor with which the temperature was measured.
+      tags:
+        - prediction
+        - temperature
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          example: 1
+          required: true
+          description: temperature id
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                y_hat:
+                  type: number
+                  format: float
+                  example: 24.2
+                y_hat_lower:
+                  type: number
+                  format: float
+                  example: 34.1
+                y_hat_upper:
+                  type: number
+                  format: float
+                  example: 11.4
+                date:
+                  type: string
+                  format: date-time
+                  example: "2017-07-21T17:32:28Z"
+      responses:
+        '201':
+          description: Prediction stored.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prediction"
+        '401':
+          description: Requires authentication.
+        '403':
+          description: Forbidden. User is not the owner of the measured temperature.
+        '404':
+          description: Temperature not found.
+        '422':
+          description: Validation error. Missing values, incorrect input types...
+
+
+  /sensors/{id}/predictions:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        example: 1
+        required: true
+        description: Sensor id
+
+    get:
+      tags:
+        - sensor
+        - prediction
+      summary: Get all the temperature predictions of a sensor
+      description: Get all the predictions of a sensor, paginated. Requires authentication. Only allowed to the owner of the sensor.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns all predictions. Paginated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sensor_id:
+                          type: integer
+                          example: 1
+                        temperature_id:
+                          type: integer
+                          example: 1
+                        y_hat:
+                          type: number
+                          format: float
+                          example: 1.1
+                        y_hat_lower:
+                          type: number
+                          format: float
+                          example: 3.1
+                        y_hat_upper:
+                          type: number
+                          format: float
+                          example: 32.1
+                        date:
+                          type: string
+                          format: date-time
+                          example: "2017-07-21T17:32:28Z"
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/predictions?page=4
+                      last:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/predictions?page=13
+                      prev:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/predictions?page=3
+                      next:
+                        type: string
+                        example: http://127.0.0.1:8000/sensors/1/predictions?page=5
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 3
+                      from:
+                        type: integer
+                        example: 2
+                      last_page:
+                        type: integer
+                        example: 13
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+
+                            url:
+                              type: string
+                              example: http://127.0.0.1:8000/sensors/1/predictions?page=3
+                            label:
+                              type: integer
+                              example: 3
+                            active:
+                              type: boolean
+                              example: true
+                  path:
+                    type: string
+                    example: http://127.0.0.1:8000/sensors/1/predictions
+                  per_page:
+                    type: integer
+                    example: 10
+                  to:
+                    type: integer
+                    example: 4
+                  total:
+                    type: integer
+                    example: 130
+
+        '401':
+          description: Requires authentication.
+        '403':
+          description: Forbidden. Only allowed to the owner of the sensor.
+        '404':
+          description: Sensor not found.
+
+
+
+
+
+
+
 components:
   schemas:
     Home:
@@ -823,6 +1099,35 @@ components:
             sensor_id:
               type: integer
               example: 1
+
+    Prediction:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            sensor_id:
+              type: integer
+              example: 1
+            temperature_id:
+              type: integer
+              example: 1
+            y_hat:
+              type: number
+              format: float
+              example: 21.1
+            y_hat_lower:
+              type: number
+              format: float
+              example: 23.2
+            y_hat_upper:
+              type: number
+              format: float
+              example: 11.2
+            date:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
 
 
 
