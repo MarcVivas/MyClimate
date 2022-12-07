@@ -20,4 +20,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('api.temperatures.store');
 
 
+    // Get all temperatures of a sensor
+    Route::get('sensors/{id}/temperatures', [TemperatureController::class, 'index'])
+        ->name('api.temperatures.index');
+
+
 });

@@ -19,5 +19,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('temperatures/{id}/predictions', [PredictionController::class, 'store'])
         ->name('api.predictions.store');
 
+    // Get all predictions of a sensor
+    Route::get('sensors/{id}/predictions', [PredictionController::class, 'index'])
+        ->name('api.predictions.index');
+
 
 });

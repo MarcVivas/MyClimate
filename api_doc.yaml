@@ -830,7 +830,6 @@ paths:
       description: Store a temperature prediction. Requires authentication. Only allowed to the owner of the sensor with which the temperature was measured.
       tags:
         - prediction
-        - temperature
       parameters:
         - in: path
           name: id
@@ -894,7 +893,6 @@ paths:
 
     get:
       tags:
-        - sensor
         - prediction
       summary: Get all the temperature predictions of a sensor
       description: Get all the predictions of a sensor, paginated. Requires authentication. Only allowed to the owner of the sensor.
