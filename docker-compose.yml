@@ -1,7 +1,84 @@
-version: '3'
-
+version: "3.9"
 services:
-  MyClimate:
+  mosquitto:
+    image: eclipse-mosquitto:1.6.15
+    container_name: mosquitto
+    restart: on-failure
+    volumes:
+      - ./MQTT_broker_mosquitto:/mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  sensor:
+    build:
+      context: ./IoT_devices
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "3001-3501:3000"
+    links:
+      - mosquitto
+    depends_on:
+      - mosquitto
+
+  server:
+    build:
+      context: ./Cloud_service
+      dockerfile: Dockerfile
+    restart: on-failure
+    container_name: server
+    ports:
+      - "3000:3000"
+    links:
+      - mosquitto
+      - kafka
+    depends_on:
+      - mosquitto
+      - kafka
+
+  analytics_module:
+    build:
+      context: ./Analytics_module
+      dockerfile: Dockerfile
+    restart: on-failure
+    container_name: analytics_module
+    ports:
+      - "8010:8010"
+    depends_on:
+      - kafka
+    links:
+      - kafka
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    restart: on-failure
+
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      TOPIC_AUTO_CREATE: true
+    restart: on-failure
+    
+  MyClimateAPI:
     image: docker.io/bitnami/laravel:9
     ports:
       - '8000:8000'
@@ -13,3 +90,6 @@ services:
       - DB_DATABASE=database
     volumes:
       - './MyClimateAPI:/app'
+    links:
+      - server
+      - sensor
