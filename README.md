@@ -1,3 +1,4 @@
+
 # IoT application with docker containers
 
 ## 1. Authors
@@ -6,11 +7,12 @@
 ## Table of Contents
 1. [Authors](#1-authors)
 2. [Introduction](#2-introduction)
-3. [How to run the application](#3-how-to-run-the-application)
-4. [Description of each component](#4-description-of-each-component)
-5. [Design decisions](#5-design-decisions) 
-6. [Conclusions and time spent](#6-conclusions)
-7. [References](#7-references)
+3. [UML class diagram](#3-uml-class-diagram)
+4. [How to run the application](#4-how-to-run-the-application)
+5. [Description of each component](#5-description-of-each-component)
+6. [Design decisions](#6-design-decisions) 
+7. [Conclusions and time spent](#7-conclusions)
+8. [References](#8-references)
 
 ## 2. Introduction
 This project consists of the creation of an IoT application.  
@@ -18,7 +20,6 @@ This project consists of the creation of an IoT application.
 ![alt text](IoT_application.jpg "IoT_application")  
   
 > Note 1: Sensors will be simulated using docker containers.  
-> Note 2: More information about the project in `./statement.pdf`.
 <br>  
 
 ## 3. UML Class Diagram
@@ -59,9 +60,9 @@ sudo docker compose up MyClimateAPI
 > Keep in mind that if you want to interact with the API, you have to send all the requests to
 `localhost:8000/`.
 
-## 4. Description of each component
+## 5. Description of each component
 ### Sensors
-Sensors first register to the app using the REST API. They will act as a user, by creating a user
+Sensors first register to the app using the REST API. They will act as a user, creating a user
 with a house containing one sensor.   
 
 Sensors send the data they collect from `data2.csv` to the server by using an MQTT broker.
@@ -127,32 +128,36 @@ When it receives a new message, the server stores it in the database.
 
 The server code is available in the `./Cloud_service` folder, to be more specific the name of the file is `server.js`.
 
+### Rest API
+The Rest API is responsible for providing other services with the possibility of interacting with the database resources.
+The code is available inside the folder named `MyClimateAPI`. 
+If you want to read more information about the API, you can read `./API_README.md`.
 
-## 5. Design decisions
+### Database
+The database stores all the information related with sensors, users, houses, measurements and measurements
+predictions.
+
+## 6. Design decisions
 
 ### Programming languages
-The sensors and the server are written in JavaScript. The project could have been written in
+The sensors and the cloud service are written in JavaScript. The project could have been written in
 any popular language, I've chosen JS because I wanted to gain more experience with it.  
   
 The analytics module, which has been given, is written in Python.
 
+Lastly, the Rest API is written in a popular php framework called Laravel because I already 
+had experience with it.
+
 ### Database
-The database that is used is **MongoDB**. The type of data it is wanted to be stored are time 
-series, which are basically measurements ordered in time. MongoDB offers an optimized way to store
-this type of data, 
-they are called [time series collections](https://www.mongodb.com/docs/manual/core/timeseries-collections/#time-series-collections).
-
-In order to interact with the database, the server uses an npm package called [mongoose](https://mongoosejs.com/).
-
-The content of the database is not going to be stored on the host computer, 
-since I'm not interested on the data. For this reason, only while the system is running you 
-will be able to access it. 
+The database that is used is **SQLite**.  
+- It was the easiest choice to integrate with Laravel, as it does not require of additional packages.
+- It is not the most efficient option. This would be InfluxDB or MongoDB, as they offer an optimized way to store timeseries. 
 
 ### Analytics module modification
 `consumer.py` has been slightly modified in order to receive and send JSON messages 
 instead of Python dictionaries.
 
-The Analytics_module now also creates the `analytics_results` Kafka topic if it does not exist. 
+Analytics_module now also creates the `analytics_results` Kafka topic if it does not exist. 
 
 Some prints have also been added to keep better track of what the service is doing.
 
@@ -177,19 +182,20 @@ its own container.
 ### Dockerize
 [Dockerize]( https://github.com/jwilder/dockerize) is a tool that allows services to wait for other services to be ready. The next services 
 are using dockerize:  
-1. Server: Waits for Kafka, Zookeeper, Mosquitto and Mongo to be ready.
-2. Sensors: Wait for Mosquitto to be ready.
+1. Server: Waits for Kafka, Zookeeper, Mosquitto and Rest API to be ready.
+2. Sensors: Wait for Mosquitto and Rest API to be ready.
 3. Analytic_module: Waits for Kafka and Zookeeper to be prepared.
 
-## 6. Conclusions
-The requirements of the statement have been fulfilled. The next goal is to implement a RESTful API 
-to access the data stored, but this is something it will be done in the next part of the project.
+## 7. Conclusions
+The requirements of the statement have been fulfilled. The next goal would be to change the database is being used for a more efficent one. A UI for the owners of the sensors should be also done.
  
 Personally, I enjoyed this project, as I learned how to work with Docker, which I find very interesting and useful.  
 
-Approximate time spent: **51 hours**. 
+Approximate time spent: 
+ - Project 1: (Sensors, cloud service, analytics module, learn docker, kafka, mqtt) **51 hours**.
+ - Project 2: (API and integration with project 1):  **41 hours**.
 
-## 7. References
+## 8. References
 1. Environment variables: https://stackoverflow.com/questions/52650775/how-to-pass-environment-variables-from-docker-compose-into-the-nodejs-project
 2. MQTT.js: https://www.npmjs.com/package/mqtt#end
 3. MQTT.js tutorial: https://www.emqx.com/en/blog/mqtt-js-tutorial
@@ -200,19 +206,7 @@ Approximate time spent: **51 hours**.
 8. Dataframe to json: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_json.html
 9. JSON parse: https://stackoverflow.com/questions/42494823/json-parse-returns-string-instead-of-object
 10. Kafka confluent: https://docs.confluent.io/platform/current/installation/docker/config-reference.html#required-confluent-enterprise-ak-settings
-11. MongoDB time series: https://www.mongodb.com/docs/manual/core/timeseries-collections/
-12. Mongoose time series tutorial: https://stackoverflow.com/questions/70717856/how-to-create-time-series-collection-with-mongoose
-13. How to wait other services to be ready: https://github.com/jwilder/dockerize 
-14. Insert image, markdown: https://stackoverflow.com/questions/41604263/how-do-i-display-local-image-in-markdown
-15. Table of contents, markdown: https://stackoverflow.com/questions/11948245/markdown-to-create-pages-and-table-of-contents/33433098#paragraph2
-
-
-
-
-
-
-
-
-
-
-
+11. How to wait other services to be ready: https://github.com/jwilder/dockerize 
+12. Insert image, markdown: https://stackoverflow.com/questions/41604263/how-do-i-display-local-image-in-markdown
+13. Table of contents, markdown: https://stackoverflow.com/questions/11948245/markdown-to-create-pages-and-table-of-contents/33433098#paragraph2
+14. API token authentication: https://laravel.com/docs/9.x/sanctum#api-token-authentication .
