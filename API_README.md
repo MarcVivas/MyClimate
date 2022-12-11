@@ -1,9 +1,17 @@
+
 # MyClimate API
 
 ## Table of contents
 1. [Author](#1-author)
 2. [About MyClimate project](#2-about-myclimate-api-project)
-3. [Hours spent]()
+3. [Built with](#3-built-with)
+4. [UML class diagram](#4-uml-class-diagram)
+5. [API documentation](#5-api-docs)
+6. [Project structure](#6-project-structure)
+7. [Hours spent](#7-hours-spent)
+8. [How to run the service](#8-how-to-run-the-api)
+9. [How to execute the tests](#9-how-to-execute-the-tests)
+10. [References](#10-references)
 
 ## 1. Author
 Marc Vivas Baiges
@@ -12,23 +20,63 @@ Marc Vivas Baiges
 This system allows users to remote managing information related with
 climate installation homes, sensors and users within a web services system.
 
-## Built with
+## 3. Built with
 The project is built with **Laravel 9** which is a php framework.
 
-## UML Class Diagram
+## 4. UML Class Diagram
 ![UML Class Diagram](api_uml_diagram.png)
 
-## API Docs
-The API endpoints are documented in the file named `api_doc.yaml`. In order to preview 
+## 5. API Docs
+The API endpoints are documented in a file named `api_doc.yaml`. In order to preview 
 the API endpoints in a friendly UI and interact with it, 
 open [Swagger Editor](https://editor.swagger.io/) and import the file.  
 
-## Project structure
-In case you have never seen a Laravel project, it can be quite hard to 
-find the code that really matters. For this reason, now I will show you where
-are the most important files.
+All endpoints require an authentication token that can only be obtained by logging in or registering a user.  
+This token must be provided in the header of each request. Example:
+```
+Authorization: Bearer 84423094230h3242304230423hk4jh23
+```
 
-## Hours spent
+## 6. Project structure
+In case you have never seen a Laravel project, it can be quite hard to 
+find the code that really matters. 
+
+### Migrations
+Database migrations are located at `./MyClimateAPI/database/migrations`.
+  
+- Here you will be able to see which are the tables created and their attributes.
+
+### Routes
+Routes are located at `./MyClimateAPI/routes/api`.
+
+- Here is where the endpoints paths are defined.  
+- Each route executes a function when it is called. The function is usually a method from a Controller.
+
+### Controllers
+Controllers are located at `./MyClimateAPI/app/Http/Controllers`. 
+- Define the logic of all the endpoints of the application.
+
+### Services
+Services are located at `./MyClimateAPI/app/Services`.
+- Controllers use services to interact with the database. 
+- Good practice.
+
+### Resources
+Resources are located at `./MyClimateAPI/app/Http/Resources`.
+- Resources are used to transform a database model to JSON format.
+
+### Requests
+Requests are located at `./MyClimateAPI/app/Http/Requests`.
+- Requests are used to check if the body of a request is correct.
+
+### Models
+Models are located at `./MyClimateAPI/app/Models`.
+- Each database table has a corresponding `Model` that is used to interact with that table. 
+
+### Tests
+Tests are located at `./MyClimateAPI/tests/Feature`. 
+
+## 7. Hours spent
 - December 2 2022: 16:30 - 19:30 Project planning ->  <strong> 3 hours </strong>  
 - December 3 2022: 9:00 - 17:30 Project development -> <strong> 8.5 hours </strong> 
 - December 4 2022: 8:00 - 15:00 Project development -> <strong> 7 hours </strong>
@@ -36,10 +84,10 @@ are the most important files.
 - December 6 2022: 7:00 - 11:30 Project development -> <strong> 4.5 hours </strong>
 - December 7 2022: 16:00 - 18:00 Project development (Finished all endpoints) -> <strong> 2 hours </strong>
 - December 8 2022: 9:00 - 14:00 Include project 1 -> <strong> 5 hours </strong>
-- December 9 2022: 8:30 - 10:00 Documentation -> <strong> 1.30 hours </strong>
-- <strong>  Total:   ?? hours  </strong> 
+- December 9 - 11 2022:  Documentation -> <strong> 8.5 hours </strong>
+- <strong>  Total:   41 hours  </strong> 
 
-## How to run the service
+## 8. How to run the API
 You should have installed `docker compose` in your system.
 
 To run only the API you have to insert the following command:
@@ -47,5 +95,15 @@ To run only the API you have to insert the following command:
 ```bash
 sudo docker compose up MyClimateAPI
 ```
-## References
+Once is running, you can send requests to localhost:8000 to interact with the API. 
+I recommend to use Postman or Swagger to test the API.
+
+## 9. How to execute the tests
+Tests have also been written. To execute them, the API service must be up and running.
+
+Once is running, open another terminal where `docker-compose.yml` is located, and insert the following command.
+```bash
+sudo docker compose exec MyClimateAPI php artisan test
+```
+## 10. References
 1. API token authentication: https://laravel.com/docs/9.x/sanctum#api-token-authentication
