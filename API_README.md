@@ -8,9 +8,9 @@
 4. [UML class diagram](#4-uml-class-diagram)
 5. [API documentation](#5-api-docs)
 6. [Project structure](#6-project-structure)
-7. [Hours spent](#7-hours-spent)
-8. [How to run the service](#8-how-to-run-the-api)
-9. [How to execute the tests](#9-how-to-execute-the-tests)
+7. [How to run the service](#7-how-to-run-the-api)
+8. [How to execute the tests](#8-how-to-execute-the-tests)
+9. [Hours spent](#9-hours-spent)
 10. [References](#10-references)
 
 ## 1. Author
@@ -39,7 +39,8 @@ Authorization: Bearer 84423094230h3242304230423hk4jh23
 
 ## 6. Project structure
 In case you have never seen a Laravel project, it can be quite hard to 
-find the code that really matters. 
+find the code that really matters. <br>
+For this reason, the project structure it's now going to be explained.
 
 ### Migrations
 Database migrations are located at `./MyClimateAPI/database/migrations`.
@@ -76,18 +77,7 @@ Models are located at `./MyClimateAPI/app/Models`.
 ### Tests
 Tests are located at `./MyClimateAPI/tests/Feature`. 
 
-## 7. Hours spent
-- December 2 2022: 16:30 - 19:30 Project planning ->  <strong> 3 hours </strong>  
-- December 3 2022: 9:00 - 17:30 Project development -> <strong> 8.5 hours </strong> 
-- December 4 2022: 8:00 - 15:00 Project development -> <strong> 7 hours </strong>
-- December 5 2022: 16:30 - 19:00 Project development -> <strong> 2.5 hours </strong>
-- December 6 2022: 7:00 - 11:30 Project development -> <strong> 4.5 hours </strong>
-- December 7 2022: 16:00 - 18:00 Project development (Finished all endpoints) -> <strong> 2 hours </strong>
-- December 8 2022: 9:00 - 14:00 Include project 1 -> <strong> 5 hours </strong>
-- December 9 - 11 2022:  Documentation -> <strong> 8.5 hours </strong>
-- <strong>  Total:   41 hours  </strong> 
-
-## 8. How to run the API
+## 7. How to run the API
 You should have installed `docker compose` in your system.
 
 To run only the API you have to insert the following command:
@@ -98,12 +88,24 @@ sudo docker compose up MyClimateAPI
 Once is running, you can send requests to localhost:8000 to interact with the API. 
 I recommend to use Postman or Swagger to test the API.
 
-## 9. How to execute the tests
-Tests have also been written. To execute them, the API service must be up and running.
+## 8. How to execute the tests
+A total of 65 tests have also been written. To execute them, the container of the API must be up and running.
 
 Once is running, open another terminal where `docker-compose.yml` is located, and insert the following command.
 ```bash
 sudo docker compose exec MyClimateAPI php artisan test
 ```
+
+## 9. Hours spent
+- December 2 2022: 16:30 - 19:30 Project planning ->  <strong> 3 hours </strong>  
+- December 3 2022: 9:00 - 17:30 Project development -> <strong> 8.5 hours </strong> 
+- December 4 2022: 8:00 - 15:00 Project development -> <strong> 7 hours </strong>
+- December 5 2022: 16:30 - 19:00 Project development -> <strong> 2.5 hours </strong>
+- December 6 2022: 7:00 - 11:30 Project development -> <strong> 4.5 hours </strong>
+- December 7 2022: 16:00 - 18:00 Project development (Finished all endpoints) -> <strong> 2 hours </strong>
+- December 8 2022: 9:00 - 14:00 Include project 1 -> <strong> 5 hours </strong>
+- December 9 - 11 2022:  Documentation -> <strong> 8.5 hours </strong>
+- <strong>  Total:   41 hours  </strong> 
+
 ## 10. References
 1. API token authentication: https://laravel.com/docs/9.x/sanctum#api-token-authentication
