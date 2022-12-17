@@ -89,6 +89,8 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_DATABASE=database
+    command: > 
+        sh -c "yes | composer install --no-suggest && yes | npm install && yes | php artisan migrate && /opt/bitnami/scripts/laravel/run.sh"
     volumes:
       - './MyClimateAPI:/app'
     links:
