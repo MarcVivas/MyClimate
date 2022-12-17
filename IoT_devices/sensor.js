@@ -18,7 +18,6 @@ async function main() {
     );
     // -----------------------------------------------------------
 
-
     // -----------------------------------------------------------
     // Read csv
     let collectedData = (require("fs").readFileSync("./data2.csv", "utf8")).split("\r");
@@ -35,7 +34,7 @@ async function main() {
         console.log(apiData);
 
         // Sensor connected!
-        console.log('Sensor ' +  apiData.sensor.id + ' is now connected to the MQTT broker');
+        console.log('Sensor ' +  process.env.HOSTNAME + ' is now connected to the MQTT broker');
 
         publishCollectedData(collectedData, 'temperature', client, apiData.sensor.id, apiData.token);
 
@@ -165,7 +164,7 @@ async function loginUser(username, password) {
  * @return {Promise<unknown>}
  */
 async function registerUser(username, password) {
-    let response = await fetch('http://MyClimateAPI:8000/user/register', {
+    return await fetch('http://MyClimateAPI:8000/user/register', {
         method: 'post',
         body: JSON.stringify({
             'username': username,
@@ -173,7 +172,6 @@ async function registerUser(username, password) {
         }),
         headers: {'Content-Type': 'application/json'}
     });
-    return response.ok ? response: process.exit(1);
 }
 
 /**
