@@ -79,6 +79,7 @@ services:
     restart: on-failure
     
   MyClimateAPI:
+    restart: on-failure
     image: docker.io/bitnami/laravel:9
     ports:
       - '8000:8000'
