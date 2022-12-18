@@ -19,6 +19,7 @@ services:
       - "3001-3501:3000"
     links:
       - mosquitto
+      - MyClimateAPI
     depends_on:
       - mosquitto
 
@@ -33,6 +34,7 @@ services:
     links:
       - mosquitto
       - kafka
+      - MyClimateAPI
     depends_on:
       - mosquitto
       - kafka
@@ -93,6 +95,3 @@ services:
         sh -c "yes | composer install --no-suggest && yes | npm install && yes | php artisan migrate && /opt/bitnami/scripts/laravel/run.sh"
     volumes:
       - './MyClimateAPI:/app'
-    links:
-      - server
-      - sensor
